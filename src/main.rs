@@ -23,13 +23,13 @@ fn get_user_input(string_out: &str) -> String {
  * rust
  */
 fn party_count_init() -> usize {
-    return loop {
+    loop {
         if let Ok(i) = get_user_input("Parties: ").trim().parse::<usize>() {
             if i > 0 {
-                break i;
+                return i;
             }
         }
-    };
+    }
 }
 
 fn print_flush(string_out: &str) {
@@ -42,13 +42,13 @@ fn print_flush(string_out: &str) {
 }
 
 fn seats_init() -> usize {
-    return loop {
+    loop {
         if let Ok(i) = get_user_input("Seats: ").trim().parse::<usize>() {
             if i != 0 {
                 break i;
             }
         }
-    };
+    }
 }
 
 fn vote_counts_init(party_count: usize) -> Vec<f64> {
