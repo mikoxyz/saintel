@@ -9,11 +9,10 @@ fn get_user_input(string_out: &str) -> String {
             print_flush(string_out);
         }
 
-       match io::stdin().read_line(&mut input) {
+        match io::stdin().read_line(&mut input) {
             Err(error) => panic!("{}", error),
             _ => continue,
         };
-
     }
 
     input
@@ -57,7 +56,11 @@ fn vote_counts_init(party_count: usize) -> Vec<f64> {
 
     for n in 0..party_count {
         loop {
-            if let Ok(i) = get_user_input(format!("Party {} votes: ", n + 1).as_str()).replace(',',"").trim().parse() {
+            if let Ok(i) = get_user_input(format!("Party {} votes: ", n + 1).as_str())
+                .replace(',', "")
+                .trim()
+                .parse()
+            {
                 if i >= 0.0 {
                     vote_counts.push(i);
                     break;

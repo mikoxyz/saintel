@@ -71,7 +71,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "sl"
+name = "saintel"
 version = "0.1.0"
 dependencies = [
  "sainte_lague",
