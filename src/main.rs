@@ -2,6 +2,11 @@ use sainte_lague::distribute;
 use std::io;
 use std::io::Write;
 
+enum Toggle {
+    Parties,
+    Seats
+}
+
 fn get_user_input(string_out: &str) -> String {
     let mut input = String::new();
     while input.trim().is_empty() {
@@ -21,12 +26,11 @@ fn print_flush(string_out: &str) {
     io::stdout().flush().expect("err");
 }
 
-fn party_count_seats_init(toggle: char) -> usize {
+fn party_count_seats_init(toggle: Toggle) -> usize {
     loop {
         if let Ok(i) = get_user_input(match toggle {
-            'p' => "Parties: ",
-            's' => "Seats: ",
-            _ => panic!("invalid"),
+            Toggle::Parties => "Parties: ",
+            Toggle::Seats => "Seats: ",
         })
         .trim()
         .parse::<usize>()
@@ -60,7 +64,7 @@ fn vote_counts_init(party_count: usize) -> Vec<f64> {
 }
 
 fn main() {
-    let party_count = party_count_seats_init('p');
+    let party_count = party_count_seats_init(Toggle::Parties);
     let draw_on_tie = matches!(
         get_user_input("Draw on tie? ").trim(),
         "yes" | "y" | "true" | "t"
@@ -68,7 +72,7 @@ fn main() {
 
     let distribution = distribute(
         &vote_counts_init(party_count),
-        &party_count_seats_init('s'),
+        &party_count_seats_init(Toggle::Seats),
         &draw_on_tie,
     )
     .expect("err: ");
