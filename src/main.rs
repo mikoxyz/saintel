@@ -39,7 +39,7 @@ fn seats_init() -> usize {
     loop {
         if let Ok(i) = get_user_input("Seats: ").trim().parse::<usize>() {
             if i != 0 {
-                break i;
+                return i;
             }
         }
     }
