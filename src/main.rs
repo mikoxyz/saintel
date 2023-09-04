@@ -15,29 +15,22 @@ fn get_user_input(string_out: &str) -> String {
     input
 }
 
-/*
- * party_count_init and seats_init could probably be turned into a single macro, idk i don't know
- * rust
- */
-fn party_count_init() -> usize {
-    loop {
-        if let Ok(i) = get_user_input("Parties: ").trim().parse::<usize>() {
-            if i > 0 {
-                return i;
-            }
-        }
-    }
-}
-
 fn print_flush(string_out: &str) {
     print!("{}", string_out);
 
     io::stdout().flush().expect("err");
 }
 
-fn seats_init() -> usize {
+fn party_count_seats_init(toggle: char) -> usize {
     loop {
-        if let Ok(i) = get_user_input("Seats: ").trim().parse::<usize>() {
+        if let Ok(i) = get_user_input(match toggle {
+            'p' => "Parties: ",
+            's' => "Seats: ",
+            _ => panic!("invalid"),
+        })
+        .trim()
+        .parse::<usize>()
+        {
             if i != 0 {
                 return i;
             }
@@ -67,13 +60,18 @@ fn vote_counts_init(party_count: usize) -> Vec<f64> {
 }
 
 fn main() {
-    let party_count = party_count_init();
+    let party_count = party_count_seats_init('p');
     let draw_on_tie = matches!(
         get_user_input("Draw on tie? ").trim(),
         "yes" | "y" | "true" | "t"
     );
 
-    let distribution = distribute(&vote_counts_init(party_count), &seats_init(), &draw_on_tie).expect("err: ");
+    let distribution = distribute(
+        &vote_counts_init(party_count),
+        &party_count_seats_init('s'),
+        &draw_on_tie,
+    )
+    .expect("err: ");
 
     print_flush("\n");
     for n in 0..party_count {
