@@ -9,10 +9,7 @@ fn get_user_input(string_out: &str) -> String {
             print_flush(string_out);
         }
 
-        match io::stdin().read_line(&mut input) {
-            Err(error) => panic!("{}", error),
-            _ => continue,
-        };
+        io::stdin().read_line(&mut input).expect("err");
     }
 
     input
@@ -35,10 +32,7 @@ fn party_count_init() -> usize {
 fn print_flush(string_out: &str) {
     print!("{}", string_out);
 
-    match io::stdout().flush() {
-        Ok(ret) => ret,
-        Err(error) => panic!("{}", error),
-    };
+    io::stdout().flush().expect("err");
 }
 
 fn seats_init() -> usize {
@@ -79,10 +73,7 @@ fn main() {
         "yes" | "y" | "true" | "t"
     );
 
-    let distribution = distribute(&vote_counts_init(party_count), &seats_init(), &draw_on_tie)
-        .unwrap_or_else(|error| {
-            panic!("{}", error);
-        });
+    let distribution = distribute(&vote_counts_init(party_count), &seats_init(), &draw_on_tie).expect("err: ");
 
     print_flush("\n");
     for n in 0..party_count {
