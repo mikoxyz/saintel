@@ -4,7 +4,7 @@ use std::io::Write;
 
 enum Toggle {
     Parties,
-    Seats
+    Seats,
 }
 
 fn get_user_input(string_out: &str) -> String {
@@ -78,7 +78,7 @@ fn main() {
     .expect("err: ");
 
     print_flush("\n");
-    for n in 0..party_count {
-        println!("Party {}: {} seats", n + 1, distribution[n]);
+    for (n, dist) in distribution.iter().enumerate().take(party_count) {
+        println!("Party {}: {} seats", n + 1, dist);
     }
 }
